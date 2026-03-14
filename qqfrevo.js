@@ -8,7 +8,7 @@ const { createServer } = require("@vercel/node");
 const app = express();
 const PORT = 5000;
 
-app.use(express.static(path.join(__dirname, "app.html")));
+app.use(express.static(path.join(__dirname, "/")));
 
 /* ===== CARREGAR CONFIG JSON ===== */
 const config = JSON.parse(fs.readFileSync("./config.json", "utf-8"));
