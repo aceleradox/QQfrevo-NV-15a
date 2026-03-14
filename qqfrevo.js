@@ -7,7 +7,7 @@ const fs = require("fs");
 const app = express();
 const PORT = 5000;
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "index.html")));
 
 /* ===== CARREGAR CONFIG JSON ===== */
 const config = JSON.parse(fs.readFileSync("./config.json", "utf-8"));
