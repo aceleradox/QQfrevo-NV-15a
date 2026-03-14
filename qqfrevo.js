@@ -9,6 +9,10 @@ const app = express();
 const PORT = 5000;
 
 app.use(express.static(path.join(__dirname, "/")));
+// rota raiz entrega app.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "app.html"));
+});
 
 /* ===== CARREGAR CONFIG JSON ===== */
 const config = JSON.parse(fs.readFileSync("./config.json", "utf-8"));
