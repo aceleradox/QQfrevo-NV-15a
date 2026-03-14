@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>qqfrevo n15a</title>
+<style>
+body { background:#0d1117; color:#39ff14; font-family:Arial,sans-serif; margin:0; }
+h1 { text-align:center; text-shadow:0 0 15px #39ff14; margin-top:20px; }
+.busca { text-align:center; margin-top:20px; }
+input, button { padding:10px; border-radius:6px; border:none; font-size:16px; }
+button { background:#39ff14; cursor:pointer; font-weight:bold; margin-left:5px; }
+.contador { font-size:48px; text-align:center; margin-top:15px; }
+.resultados { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; padding:20px; }
+.card { background:#161b22; padding:15px; border-radius:10px; transition:transform 0.3s; }
+.card:hover { transform:translateY(-6px); }
+.card img { width:100%; border-radius:10px; }
+</style>
+</head>
+<body>
+
+<h1>qqfrevo n15a</h1>
+
+<div class="busca">
+  <input id="cidade" placeholder="Cidade">
+  <button onclick="buscar()">Buscar</button>
+</div>
+
+<div id="contador" class="contador">00</div>
+<div id="lista" class="resultados"></div>
+
+<script>
+async function buscar() {
+  const cidade = document.getElementById("cidade").value;
+  const lista = document.getElementById("lista");
+  const contador = document.getElementById("contador");
+
+  lista.innerHTML = "";
+  let n = 0;
+  const timer = setInterval(() => {
+    contador.innerText = String(n).padStart(2,"0");
+    n = (n + 1) % 100;
+  }, 50);
+
+  const res = await fetch(`/api/search?cidade=${encodeURIComponent(cidade)}`);
+  const data = await res.json();
+
+  clearInterval(timer);
+  contador.innerText = data.length;
+
+  if(!data.length) {
+    lista.innerHTML = "<p style='text-align:center;'>Nenhum resultado encontrado.</p>";
+    return;
+  }
+
+  // Mostra resultados à medida que chegam
+  data.forEach(r => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <b>${r.categoria}</b><br>
+      <a href="${r.url}" target="_blank">${r.url}</a>
+      <p>${r.descricao.substring(0,200)}...</p>
+      <img src="${r.imagem}">
+    `;
+    lista.appendChild(div);
+  });
+}
+</script>
+
+</body>
+</html>
